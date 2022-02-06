@@ -4,3 +4,10 @@ CREATE TABLE users (
     password TEXT,
     role INTEGER
 );
+
+CREATE TABLE topics (
+    id SERIAL PRIMARY KEY,
+    creator_id INTEGER REFERENCES users,
+    subject TEXT,
+    visibility INTEGER
+);

@@ -1,11 +1,15 @@
 from app import app
 from flask import render_template, request, redirect
-import users
+import users, topics
 
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    if users.user_id() == 0:
+        return render_template("index.html")
+    else:
+        all_topics = topics.get_topics()
+        return render_template("index.html", topics=all_topics)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -39,4 +43,14 @@ def logout():
     users.logout()
     return redirect("/")
 
+@app.route("/topics/new", methods=["POST"])
+def new_topic():
+    if users.is_admin():
+        creator_id = users.user_id()
+        subject = request.form["subject"]
+        visibility = request.form["visibility"]
+        topics.new_topic(creator_id, subject, visibility)
+        return redirect("/")
+    else:
+        render_template("error.html", message="Sinulla ei ole vaadittavia oikeuksia.")
 

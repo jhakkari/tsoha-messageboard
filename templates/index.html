@@ -1,6 +1,13 @@
 {% if session.user_id %}
 <p>Olet kirjautunut sisään.</p>
 <a href="/logout">Kirjaudu ulos</a>
+<ul>
+{% for topic in topics %}
+{{ topic.subject }} <br>
+<a href="/threads/{{ topic.id }}">Siirry keskustelualueelle </a>
+<hr>
+{% endfor %}
+</ul>
 {% else %}
 <form action="/login" method="POST">
 <p>Tunnus:<br>
