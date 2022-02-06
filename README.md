@@ -14,3 +14,16 @@ Sovelluksen ominaisuuksia:
 - Käyttäjä voi tallentaa seuraamiaan ketjuja suosikkeihin.
 - Ylläpitäjä voi lisätä ja poistaa keskustelualueita.
 - Ylläpitäjä voi luoda salaisen alueen ja määrittää, keillä käyttäjillä on pääsy alueelle.
+
+
+## Sovelluksen tila
+
+Keskustelualueet näkyvät sovelluksen etusivulla. Keskeisissä ominaisuuksissa puutteita, ulkoasu on täysin keskeneräinen.
+
+
+## Toimivat ominaisuudet
+
+- Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
+- Sovelluksen etusivulla näkyy lista olemassa olevista keskustelualueista.
+
+Sovellus on testattavissa [Herokussa.](https://tsohak-messageboard.herokuapp.com/)
