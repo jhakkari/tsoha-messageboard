@@ -1,0 +1,8 @@
+<ul>
+{% for thread in all_threads %}
+{{ thread.subject }} <br>
+{{ thread.username }} - {{ thread.created_at }} <br>
+<a href="/thread/{{ thread.id }}">Siirry keskusteluun </a>
+<hr>
+{% endfor %}
+</ul>
