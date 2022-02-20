@@ -18,12 +18,13 @@ Sovelluksen ominaisuuksia:
 
 ## Sovelluksen tila
 
-Keskustelualueet näkyvät sovelluksen etusivulla. Keskeisissä ominaisuuksissa puutteita, ulkoasu on täysin keskeneräinen.
+Keskustelualueet näkyvät sovelluksen etusivulla. Perusominaisuudet toimivat, ulkoasu on täysin keskeneräinen.
 
 
 ## Toimivat ominaisuudet
 
 - Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
 - Sovelluksen etusivulla näkyy lista olemassa olevista keskustelualueista.
+- Keskustelualueilla näkyy lista olemassa olevista ketjuista.
 
 Sovellus on testattavissa [Herokussa.](https://tsohak-messageboard.herokuapp.com/)
