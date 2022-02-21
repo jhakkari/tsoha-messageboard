@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, request, redirect
-import users, topics, threads
+import users, topics, threads, messages
 
 
 @app.route("/")
@@ -72,3 +72,21 @@ def new_thread():
     visibility = request.form["visibility"]
     threads.new_thread(topic_id, creator_id, subject, content, visibility)
     return redirect("/threads/" + str(topic_id))
+
+@app.route("/thread/<int:id>")
+def thread(id):
+    if users.user_id() == 0:
+        return redirect("/")
+    contents = threads.get_thread(id)
+    all_messages = messages.get_messages(id)
+    return render_template("thread.html", subject=contents[0], content=contents[1], username=contents[4], created_at=contents[2], all_messages=all_messages, thread_id=id)
+
+@app.route("/messages/new", methods=["POST"])
+def new_message():
+    if users.user_id() == 0:
+        return render_template("error.html", message="Ei vaadittavia oikeuksia.")
+    creator_id = users.user_id()
+    thread_id = request.form["thread_id"]
+    content = request.form["message_content"]
+    messages.new_message(creator_id, thread_id, content)
+    return redirect("/thread/" + str(thread_id))

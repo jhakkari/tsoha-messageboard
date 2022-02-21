@@ -1,0 +1,19 @@
+{{ subject }}
+{{ content }}
+{{ username }}
+{{ created_at }}
+
+<hr>
+
+{% for message in all_messages %}
+{{ message.content }} <br>
+{{ message.username }} - {{ message.created_at }} <br>
+<hr>
+{% endfor %}
+
+Kirjoita uusi viesti: <br>
+<form action="/messages/new" method="POST">
+<textarea name="message_content" rows="4" cols="50"></textarea>
+<input type="hidden" name="thread_id" value="{{ thread_id }}">
+<input type="submit" value="Lähetä">
+</form>
