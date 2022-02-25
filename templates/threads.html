@@ -1,8 +1,16 @@
 <ul>
-{% for thread in all_threads %}
+{% for thread in general_threads %}
 {{ thread.subject }} <br>
 {{ thread.username }} - {{ thread.created_at }} <br>
 <a href="/thread/{{ thread.id }}">Siirry keskusteluun </a>
+<hr>
+{% endfor %}
+</ul>
+<ul>
+{% for thread in hidden_threads %}
+{{ thread.subject }} <br>
+{{ thread.username }} - {{ thread.created_at }} <br>
+<a href="/thread/{{ thread.id }}">Siirry piilotettuun keskusteluun </a>
 <hr>
 {% endfor %}
 </ul>

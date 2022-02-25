@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session
 import users, topics, threads, messages
 
 
@@ -7,9 +7,13 @@ import users, topics, threads, messages
 def index():
     if users.user_id() == 0:
         return render_template("index.html")
+    elif session["user_group"] != 0:
+        general_topics = topics.get_general_topics()
+        hidden_topics = topics.get_hidden_topics(session["user_group"])
+        return render_template("index.html", general_topics=general_topics, hidden_topics=hidden_topics)
     else:
-        all_topics = topics.get_topics()
-        return render_template("index.html", topics=all_topics)
+        general_topics = topics.get_general_topics()
+        return render_template("index.html", general_topics=general_topics)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -31,9 +35,10 @@ def register():
         username = request.form["username"]
         password1 = request.form["password1"]
         password2 = request.form["password2"]
+        role = request.form["user_group"]
         if password1 != password2:
             return render_template("error.html", message="Salasanat eroavat")
-        if users.register(username, password1):
+        if users.register(username, password1, role):
             return redirect("/")
         else:
             return render_template("error.html", message="Rekisteröinti ei onnistunut")
@@ -52,41 +57,55 @@ def new_topic():
         topics.new_topic(creator_id, subject, visibility)
         return redirect("/")
     else:
-        render_template("error.html", message="Sinulla ei ole vaadittavia oikeuksia.")
+        render_template("error.html", message="Ei vaadittavia oikeuksia.")
 
 @app.route("/threads/<int:id>", methods=["GET", "POST"])
 def theads(id):
     if users.user_id() == 0:
         return redirect("/")
-    all_threads = threads.get_threads(id)
-    return render_template("threads.html", all_threads=all_threads)
+    elif session["user_group"] != 0:
+        general_threads = threads.get_general_threads(id)
+        hidden_threads = threads.get_hidden_threads(id, session["user_group"])
+        return render_template("threads.html", general_threads=general_threads, hidden_threads=hidden_threads)
+    else:
+        general_threads = threads.get_general_threads(id)
+        return render_template("threads.html", general_threads=general_threads)
 
 @app.route("/threads/new", methods=["POST"])
 def new_thread():
     if users.user_id() == 0:
-        return redirect("/")
+        return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
     topic_id = request.form["topic_id"]
-    creator_id = users.user_id()
-    subject = request.form["subject"]
-    content= request.form["content"]
-    visibility = request.form["visibility"]
-    threads.new_thread(topic_id, creator_id, subject, content, visibility)
-    return redirect("/threads/" + str(topic_id))
+    if topics.check_access(topic_id, session["user_group"]):
+        creator_id = users.user_id()
+        subject = request.form["subject"]
+        content= request.form["content"]
+        visibility = request.form["visibility"]
+        threads.new_thread(topic_id, creator_id, subject, content, visibility)
+        return redirect("/threads/" + str(topic_id))
+    return render_template("error.html", message="Ei vaadittavia oikeuksia.")
 
 @app.route("/thread/<int:id>")
 def thread(id):
     if users.user_id() == 0:
-        return redirect("/")
-    contents = threads.get_thread(id)
-    all_messages = messages.get_messages(id)
-    return render_template("thread.html", subject=contents[0], content=contents[1], username=contents[4], created_at=contents[2], all_messages=all_messages, thread_id=id)
+        return render_template("error.html", "Kirjaudu sisään jatkaaksesi.")
+    elif threads.check_access(id, session["user_group"]):
+        contents = threads.get_thread(id)
+        reply_messages = messages.get_messages(id)
+        return render_template("thread.html", subject=contents[0], content=contents[1], username=contents[4], created_at=contents[2], reply_messages=reply_messages, thread_id=id)
+    else:
+        return render_template("error.html", message="Ei vaadittavia oikeuksia.")
+
 
 @app.route("/messages/new", methods=["POST"])
 def new_message():
     if users.user_id() == 0:
-        return render_template("error.html", message="Ei vaadittavia oikeuksia.")
-    creator_id = users.user_id()
+        return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
     thread_id = request.form["thread_id"]
-    content = request.form["message_content"]
-    messages.new_message(creator_id, thread_id, content)
-    return redirect("/thread/" + str(thread_id))
+    if threads.check_access(thread_id, session["user_group"]):
+        creator_id = users.user_id()
+        content = request.form["message_content"]
+        messages.new_message(creator_id, thread_id, content)
+        return redirect("/thread/" + str(thread_id))
+    else:
+        return render_template("error.html", message="Et voi vastata tähän viestiketjuun.")

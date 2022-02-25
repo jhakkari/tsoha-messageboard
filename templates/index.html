@@ -2,9 +2,16 @@
 <p>Olet kirjautunut sisään.</p>
 <a href="/logout">Kirjaudu ulos</a>
 <ul>
-{% for topic in topics %}
+{% for topic in general_topics %}
 {{ topic.subject }} <br>
 <a href="/threads/{{ topic.id }}">Siirry keskustelualueelle </a>
+<hr>
+{% endfor %}
+</ul>
+<ul>
+{% for topic in hidden_topics %}
+{{ topic.subject }} <br>
+<a href="/threads/{{ topic.id }}">Siirry piilotetulle keskustelualueelle </a>
 <hr>
 {% endfor %}
 </ul>

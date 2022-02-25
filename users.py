@@ -11,7 +11,7 @@ def login(username, password):
     else:
         if check_password_hash(user.password, password):
             session["user_id"] = user.id
-            session["user_admin"] = user.role
+            session["user_group"] = user.role
             return True
         else:
             return False
@@ -21,13 +21,13 @@ def user_id():
 
 def logout():
     del session["user_id"]
-    del session["user_admin"]
+    del session["user_group"]
 
-def register(username, password):
+def register(username, password, role):
     hash_value = generate_password_hash(password)
     try:
-        sql = "INSERT INTO users (username, password, role) VALUES (:username, :password, 0)"
-        db.session.execute(sql, {"username":username, "password":hash_value})
+        sql = "INSERT INTO users (username, password, role) VALUES (:username, :password, :role)"
+        db.session.execute(sql, {"username":username, "password":hash_value, "role":role})
         db.session.commit()
     except:
         return False
@@ -35,7 +35,7 @@ def register(username, password):
     return login(username, password)
 
 def is_admin():
-    if session.get("user_admin", 0) == 1:
+    if session.get("user_group", 0) == 1:
         return True
     
     return False
