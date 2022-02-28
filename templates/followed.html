@@ -1,0 +1,6 @@
+{% for thread in followed_threads %}
+{{ thread.subject }} <br>
+<a href="/thread/{{ thread.thread_id }}">Siirry keskusteluun </a>
+<hr>
+{{thread.added_at}} <br>
+{% endfor %}

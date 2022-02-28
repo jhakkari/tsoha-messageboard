@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, request, redirect, session
-import users, topics, threads, messages
+import users, topics, threads, messages, followed
 
 
 @app.route("/")
@@ -109,3 +109,18 @@ def new_message():
         return redirect("/thread/" + str(thread_id))
     else:
         return render_template("error.html", message="Et voi vastata tähän viestiketjuun.")
+
+@app.route("/followed")
+def followed_threads():
+    if users.user_id() == 0:
+        return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
+    threads = followed.get_followed_threads(users.user_id())
+    return render_template("followed.html", followed_threads=threads)
+
+@app.route("/followed/add", methods=["POST"])
+def add_followed():
+    if users.user_id() == 0:
+        return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
+    thread_id = request.form["thread_id"]
+    followed.add_followed_threads(users.user_id(), thread_id)
+    return redirect("/thread/" + str(thread_id))
