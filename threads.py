@@ -1,6 +1,6 @@
 from db import db
 from flask import session
-import messages
+import messages, followed
 
 def new_thread(topic_id, creator_id, subject, content, visibility):
     sql = ("INSERT INTO topics (topic_id, creator_id, created_at, subject, content, visibility, modified) VALUES (:topic_id, :creator_id, NOW(), :subject, :content, :visibility, NOW())")
@@ -41,6 +41,7 @@ def check_access(thread_id, user_group):
 
 def delete_thread(thread_id):
     messages.delete_messages(thread_id)
+    followed.delete_followings(thread_id)
     sql = ("DELETE FROM threads WHERE id=:thread_id")
     db.session.execute(sql, {"thread_id":thread_id})
     db.session.commit()

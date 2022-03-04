@@ -16,3 +16,8 @@ def remove_followed_thread(user_id, thread_id):
     sql = ("DELETE FROM followed WHERE user_id=:user_id AND thread_id=:thread_id")
     db.session.execute(sql, {"user_id":user_id, "thread_id":thread_id})
     db.session.commit()
+
+def delete_followings(thread_id):
+    sql = ("DELETE FROM followed WHERE thread_id=:thread_id")
+    db.session.execute(sql, {"thread_id":thread_id})
+    db.session.commit()
