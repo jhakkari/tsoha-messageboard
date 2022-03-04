@@ -3,6 +3,12 @@
 {{ username }}
 {{ created_at }}
 
+{% if session['user_id'] == user_id %}
+<form action="/thread/modify" method="POST">
+    <input type="hidden" name="thread_id" value="{{ thread_id }}">
+    <input type="submit" value="Muokkaa">
+</form>
+{% endif %}
 <hr>
 
 {% for message in reply_messages %}

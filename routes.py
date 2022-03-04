@@ -103,10 +103,29 @@ def thread(id):
     elif threads.check_access(id, session["user_group"]):
         contents = threads.get_thread(id)
         reply_messages = messages.get_messages(id)
-        return render_template("thread.html", subject=contents[0], content=contents[1], username=contents[4], created_at=contents[2], reply_messages=reply_messages, thread_id=id)
+        return render_template("thread.html", subject=contents[0], content=contents[1], username=contents[4], created_at=contents[2], user_id=contents[6], reply_messages=reply_messages, thread_id=id)
     else:
         return render_template("error.html", message="Ei vaadittavia oikeuksia.")
 
+@app.route("/thread/modify", methods=["POST"])
+def modify_thread():
+    if users.user_id() == 0:
+        return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
+    thread = threads.get_thread(request.form["thread_id"])
+    if thread[6] == session["user_id"]:
+        return render_template("modifythread.html", thread_id=thread[7], subject=thread[0], content=thread[1])
+    else:
+        render_template("error.html", message="Ei vaadittavia oikeuksia.")
+
+@app.route("/thread/modify/save", methods=["POST"])
+def save_modified_thread():
+    if users.user_id() == 0:
+        render_template("error.html", messages="kirjaudu sisään jatkaaksesi.")
+    thread_id = request.form["thread_id"]
+    if threads.modify_thread(thread_id, request.form["modified_subject"], request.form["modified_content"], users.user_id()):
+        return redirect("/thread/" + str(thread_id))
+    else:
+        return render_template("error.html", message="Ei vaadittavia oikeuksia.")
 
 @app.route("/messages/new", methods=["POST"])
 def new_message():
