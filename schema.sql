@@ -31,3 +31,10 @@ CREATE TABLE messages (
     created_at TIMESTAMP,
     modified TIMESTAMP
 );
+
+CREATE TABLE followed (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users,
+    thread_id INTEGER REFERENCES threads,
+    added_at TIMESTAMP
+);
