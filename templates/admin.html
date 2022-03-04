@@ -1,0 +1,33 @@
+{% for topic in general_topics %}
+{{ topic.subject }} <br>
+<form action="/topics/delete" method="POST">
+    <input type="hidden" name="topic_id" value=" {{ topic.id }} ">
+    <input type="submit" value="Poista aihealue">
+</form>
+{% endfor %}
+</ul>
+<ul>
+{% for topic in hidden_topics %}
+{{ topic.subject }} <br>
+<form action="/topics/delete" method="POST">
+    <input type="hidden" name="topic_id" value=" {{ topic.id }} ">
+    <input type="submit" value="Poista aihealue">
+</form>
+{% endfor %}
+
+Luo uusi aihealue:
+<form action="/topics/new" method="POST">
+    <p> Alueen nimi:<br>
+        <input type="text" name="subject">
+    <p>
+        <label for="visibility">Näkyvyys käyttäjäryhmälle: </label>
+        <select name="visibility" id="visibility">
+            <option value="0">Peruskäyttäjä</option>
+            <option value="1">Ylläpitäjä</option>
+            <option value="2">Käyttäjäryhmä 1</option>
+            <option value="3">Käyttäjäryhmä 2</option>
+            <option value="4">Käyttäjäryhmä 3</option>
+        </select>
+    </p>
+    <input type="submit" value="Luo aihealue">
+</form>

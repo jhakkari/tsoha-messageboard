@@ -55,9 +55,20 @@ def new_topic():
         subject = request.form["subject"]
         visibility = request.form["visibility"]
         topics.new_topic(creator_id, subject, visibility)
-        return redirect("/")
+        return redirect("/admin")
     else:
         render_template("error.html", message="Ei vaadittavia oikeuksia.")
+
+@app.route("/topics/delete", methods=["POST"])
+def delete_topic():
+    if users.user_id() == 0:
+        return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
+    elif users.is_admin():
+        topics.delete_topic(request.form["topic_id"])
+        return redirect("/admin")
+    else:
+        return render_template("error.html", message="Ei vaadittavia oikeuksia.")
+
 
 @app.route("/threads/<int:id>", methods=["GET", "POST"])
 def theads(id):
@@ -124,3 +135,14 @@ def add_followed():
     thread_id = request.form["thread_id"]
     followed.add_followed_threads(users.user_id(), thread_id)
     return redirect("/thread/" + str(thread_id))
+
+@app.route("/admin")
+def admin():
+    if users.user_id() == 0:
+        return render_template("error.html", message="Kirjaudu sisän jatkaaksesi.")
+    elif users.is_admin():
+        general_topics = topics.get_general_topics()
+        hidden_topics = topics.get_hidden_topics(1)
+        return render_template("admin.html", general_topics=general_topics, hidden_topics=hidden_topics)
+    else:
+        return render_template("error.html", message="Ei vaadittavia oikeuksia.")

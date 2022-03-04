@@ -1,9 +1,9 @@
 from db import db
 from flask import session
-import users
+import users, threads
 
 def new_topic(creator_id, subject, visibility):
-    sql = ("INSERT INTO topics (creator_id, subject, visibility) VALUES (:creator_id :subject, :visibility)")
+    sql = ("INSERT INTO topics (creator_id, subject, visibility) VALUES (:creator_id, :subject, :visibility)")
     db.session.execute(sql, {"creator_id":creator_id, "subject":subject, "visibility":visibility})
     db.session.commit()
 
@@ -33,3 +33,12 @@ def check_access(topic_id, user_group):
         return True
     else:
         return False
+
+def delete_topic(topic_id):
+    sql = ("SELECT id FROM threads WHERE topic_id=:topic_id")
+    results = db.session.execute(sql, {"topic_id":topic_id}).fetchall()
+    for id in results:
+        threads.delete_thread(id[0])
+    sql = ("DELETE FROM topics WHERE id=:topic_id")
+    db.session.execute(sql, {"topic_id":topic_id})
+    db.session.commit()

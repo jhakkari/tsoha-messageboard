@@ -10,3 +10,8 @@ def get_messages(thread_id):
     sql = "SELECT U.username, M.content, M.created_at, M.modified FROM users U, messages M WHERE U.id=M.creator_id AND M.thread_id=:thread_id ORDER BY M.created_at"
     results = db.session.execute(sql, {"thread_id":thread_id}).fetchall()
     return results
+
+def delete_messages(thread_id):
+    sql = ("DELETE FROM messages WHERE thread_id=:thread_id")
+    db.session.execute(sql, {"thread_id":thread_id})
+    db.session.commit()
