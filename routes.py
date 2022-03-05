@@ -103,7 +103,7 @@ def thread(id):
     elif threads.check_access(id, session["user_group"]):
         contents = threads.get_thread(id)
         reply_messages = messages.get_messages(id)
-        return render_template("thread.html", subject=contents[0], content=contents[1], username=contents[4], created_at=contents[2], user_id=contents[6], reply_messages=reply_messages, thread_id=id)
+        return render_template("thread.html", subject=contents[0], content=contents[1], username=contents[4], created_at=contents[2], user_id=contents[6], topic_id=contents[8], reply_messages=reply_messages,thread_id=id)
     else:
         return render_template("error.html", message="Ei vaadittavia oikeuksia.")
 
@@ -126,6 +126,19 @@ def save_modified_thread():
         return redirect("/thread/" + str(thread_id))
     else:
         return render_template("error.html", message="Ei vaadittavia oikeuksia.")
+
+@app.route("/thread/delete", methods=["POST"])
+def delete_thread():
+    if users.user_id() == 0:
+        render_template("Kirjaudu sisään jatkaaksesi.")
+    thread_id = request.form["thread_id"]
+    topic_id = request.form["topic_id"]
+    if threads.check_creator(thread_id, session["user_id"]):
+        threads.delete_thread(thread_id)
+        return redirect("/threads/" + str(topic_id))
+    else:
+        return render_template("error.html", message="Ei vaadittavia oikeuksia.")
+
 
 @app.route("/messages/new", methods=["POST"])
 def new_message():
@@ -160,8 +173,6 @@ def save_modified_message():
         return redirect("/thread/" + str(message[2]))
     else:
         return render_template("error.html", message="Ei vaadittavia oikeuksia.")
-    
-
 
 @app.route("/followed")
 def followed_threads():

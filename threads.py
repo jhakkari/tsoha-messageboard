@@ -8,7 +8,7 @@ def new_thread(topic_id, creator_id, subject, content, visibility):
     db.session.commit
 
 def get_thread(id):
-    sql = ("SELECT T.subject, T.content, T.created_at, T.modified, U.username, U.role, U.id, T.id FROM threads T, users U WHERE T.creator_id=U.id AND T.id=:id")
+    sql = ("SELECT T.subject, T.content, T.created_at, T.modified, U.username, U.role, U.id, T.id, T.topic_id FROM threads T, users U WHERE T.creator_id=U.id AND T.id=:id")
     result = db.session.execute(sql, {"id":id}).fetchone()
     return result
 
@@ -46,6 +46,14 @@ def check_access(thread_id, user_group):
     elif results[0] == user_group:
         return True
     elif user_group == 1:
+        return True
+    else:
+        return False
+
+def check_creator(thread_id, user_id):
+    sql = ("SELECT U.id FROM threads T, users U WHERE T.creator_id=U.id AND T.id=:thread_id")
+    results = db.session.execute(sql, {"thread_id":thread_id}).fetchone()
+    if results[0] == user_id:
         return True
     else:
         return False

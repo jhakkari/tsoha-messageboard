@@ -8,6 +8,11 @@
     <input type="hidden" name="thread_id" value="{{ thread_id }}">
     <input type="submit" value="Muokkaa">
 </form>
+<form action="/thread/delete" method="POST">
+    <input type="hidden" name="thread_id" value="{{ thread_id }}">
+    <input type="hidden" name="topic_id" value="{{ topic_id }}">
+    <input type="submit" value="Poista">
+</form>
 {% endif %}
 <hr>
 
