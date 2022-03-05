@@ -140,6 +140,29 @@ def new_message():
     else:
         return render_template("error.html", message="Et voi vastata tähän viestiketjuun.")
 
+@app.route("/messages/modify", methods=["POST"])
+def modify_message():
+    if users.user_id() == 0:
+        return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
+    message = messages.get_message(request.form["message_id"])
+    if message[0] == session["user_id"]:
+        return render_template("modifymessage.html", message_id=message[0], content=message[1])
+    else:
+        return render_template("error.html", message="Ei vaadittavia oikeuksia.")
+
+@app.route("/messages/modify/save", methods=["POST"])
+def save_modified_message():
+    if users.user_id() == 0:
+        render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
+    message_id = request.form["message_id"]
+    if messages.modify_message(message_id, request.form["modified_content"], session["user_id"]):
+        message = messages.get_message(message_id)
+        return redirect("/thread/" + str(message[2]))
+    else:
+        return render_template("error.html", message="Ei vaadittavia oikeuksia.")
+    
+
+
 @app.route("/followed")
 def followed_threads():
     if users.user_id() == 0:

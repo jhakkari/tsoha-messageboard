@@ -15,6 +15,12 @@
 {{ message.content }} <br>
 {{ message.username }} - {{ message.created_at }} <br>
 <hr>
+{% if session['user_id'] == message[0] %}
+<form action="/messages/modify" method="POST">
+    <input type="hidden" name="message_id" value="{{ message[2] }}">
+    <input type="submit" value="Muokkaa">
+</form>
+{% endif %}
 {% endfor %}
 
 Kirjoita uusi viesti: <br>

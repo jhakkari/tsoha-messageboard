@@ -6,10 +6,26 @@ def new_message(creator_id, thread_id, content):
     db.session.execute(sql, {"creator_id":creator_id, "thread_id":thread_id, "content":content})
     db.session.commit()
 
+def get_message(message_id):
+    sql = ("SELECT U.id, M.content, M.thread_id FROM messages M, users U WHERE U.id=M.creator_id AND M.id=:message_id")
+    result = db.session.execute(sql, {"message_id":message_id}).fetchone()
+    return result
+
 def get_messages(thread_id):
-    sql = "SELECT U.username, M.content, M.created_at, M.modified FROM users U, messages M WHERE U.id=M.creator_id AND M.thread_id=:thread_id ORDER BY M.created_at"
+    sql = "SELECT U.id, U.username, M.id, M.content, M.created_at, M.modified FROM users U, messages M WHERE U.id=M.creator_id AND M.thread_id=:thread_id ORDER BY M.created_at"
     results = db.session.execute(sql, {"thread_id":thread_id}).fetchall()
     return results
+
+def modify_message(message_id, content, user_id):
+    sql = ("SELECT U.id FROM users U, messages M WHERE M.creator_id=U.id AND M.id=:message_id")
+    result = db.session.execute(sql, {"message_id":message_id}).fetchone()
+    if result[0] != user_id:
+        return False
+    
+    sql = ("UPDATE messages SET content=:content, modified=NOW() WHERE id=:message_id")
+    db.session.execute(sql, {"content":content, "message_id":message_id})
+    db.session.commit()
+    return True
 
 def delete_messages(thread_id):
     sql = ("DELETE FROM messages WHERE thread_id=:thread_id")
