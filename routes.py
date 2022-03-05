@@ -51,6 +51,8 @@ def logout():
 @app.route("/topics/new", methods=["POST"])
 def new_topic():
     if users.is_admin():
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         creator_id = users.user_id()
         subject = request.form["subject"]
         visibility = request.form["visibility"]
@@ -64,6 +66,8 @@ def delete_topic():
     if users.user_id() == 0:
         return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
     elif users.is_admin():
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         topics.delete_topic(request.form["topic_id"])
         return redirect("/admin")
     else:
@@ -88,6 +92,8 @@ def new_thread():
         return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
     topic_id = request.form["topic_id"]
     if topics.check_access(topic_id, session["user_group"]):
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         creator_id = users.user_id()
         subject = request.form["subject"]
         content= request.form["content"]
@@ -113,6 +119,8 @@ def modify_thread():
         return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
     thread = threads.get_thread(request.form["thread_id"])
     if thread[6] == session["user_id"]:
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         return render_template("modifythread.html", thread_id=thread[7], subject=thread[0], content=thread[1])
     else:
         render_template("error.html", message="Ei vaadittavia oikeuksia.")
@@ -121,6 +129,8 @@ def modify_thread():
 def save_modified_thread():
     if users.user_id() == 0:
         render_template("error.html", messages="kirjaudu sisään jatkaaksesi.")
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     thread_id = request.form["thread_id"]
     if threads.modify_thread(thread_id, request.form["modified_subject"], request.form["modified_content"], users.user_id()):
         return redirect("/thread/" + str(thread_id))
@@ -131,6 +141,8 @@ def save_modified_thread():
 def delete_thread():
     if users.user_id() == 0:
         render_template("Kirjaudu sisään jatkaaksesi.")
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     thread_id = request.form["thread_id"]
     topic_id = request.form["topic_id"]
     if threads.check_creator(thread_id, session["user_id"]):
@@ -146,6 +158,8 @@ def new_message():
         return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
     thread_id = request.form["thread_id"]
     if threads.check_access(thread_id, session["user_group"]):
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         creator_id = users.user_id()
         content = request.form["message_content"]
         messages.new_message(creator_id, thread_id, content)
@@ -159,6 +173,8 @@ def modify_message():
         return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
     message = messages.get_message(request.form["message_id"])
     if message[0] == session["user_id"]:
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         return render_template("modifymessage.html", message_id=message[0], content=message[1])
     else:
         return render_template("error.html", message="Ei vaadittavia oikeuksia.")
@@ -167,6 +183,8 @@ def modify_message():
 def save_modified_message():
     if users.user_id() == 0:
         render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     message_id = request.form["message_id"]
     if messages.modify_message(message_id, request.form["modified_content"], session["user_id"]):
         message = messages.get_message(message_id)
@@ -185,6 +203,8 @@ def followed_threads():
 def add_followed():
     if users.user_id() == 0:
         return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     thread_id = request.form["thread_id"]
     followed.add_followed_threads(users.user_id(), thread_id)
     return redirect("/thread/" + str(thread_id))

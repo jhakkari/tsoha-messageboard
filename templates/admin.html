@@ -1,6 +1,7 @@
 {% for topic in general_topics %}
 {{ topic.subject }} <br>
 <form action="/topics/delete" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="hidden" name="topic_id" value=" {{ topic.id }} ">
     <input type="submit" value="Poista aihealue">
 </form>
@@ -10,6 +11,7 @@
 {% for topic in hidden_topics %}
 {{ topic.subject }} <br>
 <form action="/topics/delete" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="hidden" name="topic_id" value=" {{ topic.id }} ">
     <input type="submit" value="Poista aihealue">
 </form>
@@ -17,6 +19,7 @@
 
 Luo uusi aihealue:
 <form action="/topics/new" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <p> Alueen nimi:<br>
         <input type="text" name="subject">
     <p>

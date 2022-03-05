@@ -1,6 +1,7 @@
 Muokkaa ketjuasi:
 
 <form action="/thread/modify/save" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="hidden" name="thread_id" value="{{ thread_id }}">
     <textarea name="modified_subject" rows="1" cols="30">{{ subject }}</textarea>
     <textarea name="modified_content" rows="10" cols="50">{{ content }}</textarea>
