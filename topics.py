@@ -14,11 +14,11 @@ def get_general_topics():
 
 def get_hidden_topics(visibility):
     if visibility == 1:
-        sql = ("SELECT C.id, C.subject, (SELECT COUNT(A.*) FROM topics B LEFT JOIN threads A ON B.id=A.topic_id WHERE B.id=1)  FROM topics C WHERE visibility BETWEEN 1 AND 4")
+        sql = ("SELECT id, subject FROM topics WHERE visibility BETWEEN 1 AND 4")
         results = db.session.execute(sql).fetchall()
         return results
     else:
-        sql = ("SELECT C.id, C.subject, (SELECT COUNT(A.*) FROM topics B LEFT JOIN threads A ON B.id=A.topic_id WHERE B.id=1)  FROM topics C WHERE visibility=:visibility")
+        sql = ("SELECT id, subject FROM topics C WHERE visibility=:visibility")
         results = db.session.execute(sql, {"visibility":visibility}).fetchall()
         return results
 
