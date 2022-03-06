@@ -200,6 +200,20 @@ def save_modified_message():
     else:
         return render_template("error.html", message="Ei vaadittavia oikeuksia.")
 
+@app.route("/messages/delete", methods=["POST"])
+def delete_message():
+    if users.user_id() == 0:
+        ender_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    message_id = request.form["message_id"]
+    thread_id = request.form["thread_id"]
+    if messages.delete_message(message_id, session["user_id"]):
+        return redirect("/thread/" + str(thread_id))
+    else:
+        return render_template("error.html", message="Ei vaadittavia oikeuksia")
+    
+
 @app.route("/followed")
 def followed_threads():
     if users.user_id() == 0:

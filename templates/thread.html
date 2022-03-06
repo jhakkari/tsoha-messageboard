@@ -61,6 +61,13 @@
             <input type="hidden" name="message_id" value="{{ message[2] }}">
             <input type="submit" value="Muokkaa">
         </form>
+
+        <form action="/messages/delete" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <input type="hidden" name="message_id" value="{{ message.id }}">
+            <input type="hidden" name="thread_id" value="{{ message.thread_id }}">
+            <input type="submit" value="Poista">
+        </form>
       </div>
       </p>
       {% endif %}
