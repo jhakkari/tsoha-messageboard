@@ -79,3 +79,7 @@ nav li {
     margin-bottom: 1em;;
     padding-left: 6px;
 }
+
+.warningmessage {
+    color: red;
+}

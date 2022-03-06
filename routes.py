@@ -25,7 +25,7 @@ def login():
         if users.login(username, password):
             return redirect("/")
         else:
-            return render_template("error.html", message="Väärä tunnus tai salasana")
+            return render_template("index.html", message="Väärä tunnus tai salasana")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -37,7 +37,14 @@ def register():
         password2 = request.form["password2"]
         role = request.form["user_group"]
         if password1 != password2:
-            return render_template("error.html", message="Salasanat eroavat")
+            return render_template("register.html", message="Salasanat eroavat")
+        elif len(username) < 5:
+            return render_template("register.html", message="Tunnuksen tulee olla vähintään 5 merkkiä pitkä")
+        elif len(password1) < 8:
+            return render_template("register.html", message="Salasanan tulee olla vähintään 8 merkkiä pitkä")
+        elif len(password1) > 25 or len(username) > 25:
+            return render_template("register.html", message="Käyttäjätunnus ja/tai salasana on liian pitkä")
+
         if users.register(username, password1, role):
             return redirect("/")
         else:

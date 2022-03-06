@@ -7,11 +7,11 @@
             <h1>Luo uusi käyttäjätunnus</h1>
 
         <form action="/register" method="post">
-            Tunnus: <input type="text" name="username" required>
+            Tunnus: <input type="text" name="username" required minlength="5">
             <p>
-            Salasana: <input type="password" name="password1" required>
+            Salasana: <input type="password" name="password1" required minlength="8">
             <p>
-            Vahvista salasana: <input type="password" name="password2" required>
+            Vahvista salasana: <input type="password" name="password2" required minlength="8">
             <p>
             <label for="user_group">Käyttäjäryhmä: </label>
             <select name="user_group" id="user_group" reguired>
@@ -21,6 +21,11 @@
                 <option value="3">Käyttäjäryhmä 2</option>
                 <option value="4">Käyttäjäryhmä 3</option>
             </select>
+            <p>
+            <dic class="warningmessage">
+                {{ message }}
+            </dic>
+            </p>
             <p>
             Kukin käyttäjäryhmä näkee ryhmänsä sekä peruskäyttäjien toiminnan.
             <p>
