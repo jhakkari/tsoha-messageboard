@@ -1,16 +1,72 @@
-<ul>
-{% for thread in general_threads %}
-{{ thread.subject }} <br>
-{{ thread.username }} - {{ thread.created_at }} <br>
-<a href="/thread/{{ thread.id }}">Siirry keskusteluun </a>
-<hr>
-{% endfor %}
-</ul>
-<ul>
-{% for thread in hidden_threads %}
-{{ thread.subject }} <br>
-{{ thread.username }} - {{ thread.created_at }} <br>
-<a href="/thread/{{ thread.id }}">Siirry piilotettuun keskusteluun </a>
-<hr>
-{% endfor %}
-</ul>
+<!DOCTYPE html>
+<link rel="stylesheet" href="/static/main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<body>
+  <nav>
+    <ul>
+      <li><a href="/">Aiheet</a></li>
+      <li><a href="/followed">Seuratut</a></li>
+      <li><a href="/admin">Hallitse</a></li>
+      <li><a href="/logout">Kirjaudu ulos</a></li>
+    </ul>
+  </nav>
+
+  <div class="threads">
+      <h2>Viestiketjut</h2>
+  </div>
+
+  {% for thread in general_threads %}
+  <div class="mainblock">
+      <p>
+          <h3><a href="/thread/{{ thread.id }}">{{ thread.subject }} </a></h3>
+      </p>
+      <div class="threadinfo">
+          <p>
+          {{ thread.username }} - {{ thread.created_at.strftime("%d-%m-%Y klo. %H:%M") }}
+          </p>
+      </div>
+    </div>
+      {% endfor %}
+
+      {% for thread in hidden_threads %}
+    <div class="mainblock">
+      <p>
+          <h3><a href="/thread/{{ thread.id }}">{{ thread.subject }} </a></h3>
+      </p>
+      <div class="threadinfo">
+          <p>
+          {{ thread.username }} - {{ thread.created_at.strftime("%d-%m-%Y klo. %H:%M") }} - Piilotettu
+          </p>
+        </div>
+    </div>
+    {% endfor %}
+      {% if not general_threads and not hidden_threads %}
+      <div class="nothreadsmessage">
+          <p>
+        Täällä on vielä tyhjää. Aloita uusi viestiketju!
+          </p>
+      </div>
+    {% endif %}
+
+    <div class="secondaryblock">
+        <p>
+          <h3>Luo uusi viestiketju?</h3>
+        </p>
+      <form action="/threads/new" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+          <input type="hidden" name="topic_id" value="{{ topic_id }}">
+          <p>
+              Anna alueelle otsikko:
+          </p>
+          <textarea name="subject" rows="1" cols="50"></textarea>
+          <p>
+              Aloitusviesti:
+          </p>
+          <textarea name="content" rows="4" cols="50"></textarea>
+          <input type="submit" value="Lähetä">
+          <p>
+      </form>
+    </div>
+
+</body>

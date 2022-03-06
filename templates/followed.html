@@ -1,6 +1,42 @@
-{% for thread in followed_threads %}
-{{ thread.subject }} <br>
-<a href="/thread/{{ thread.thread_id }}">Siirry keskusteluun </a>
-<hr>
-{{thread.added_at}} <br>
-{% endfor %}
+<!DOCTYPE html>
+<link rel="stylesheet" href="/static/main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<body>
+  <nav>
+    <ul>
+      <li><a href="/">Aiheet</a></li>
+      <li><a href="/followed">Seuratut</a></li>
+      <li><a href="/admin">Hallitse</a></li>
+      <li><a href="/logout">Kirjaudu ulos</a></li>
+    </ul>
+  </nav>
+
+  <h2>Seuraamani keskustelut</h2>
+
+  {%for thread in followed_threads %}
+  <div class="mainblock">
+      <p>
+          <h3><a href="/thread/{{ thread.id }}">{{ thread.subject }} </a></h3>
+        </p>
+        <p>
+            Seurattu {{ thread.added_atstrftime("%d-%m-%Y klo. %H:%M") }} alkaen
+        </p>
+    <form action="/followed/delete" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <input type="hidden" name="thread_id" value=" {{ thread.thread_id }} ">
+        <p>
+            <input type="submit" value="Poista seuratuista">
+        </p>
+    </form>
+  </div>
+  {% endfor %}
+  {% if not followed_threads and not hidden_threads %}
+      <div class="nothreadsmessage">
+          <p>
+        Täällä on vielä tyhjää. Yhtään ketjua ei ole seurannassa!
+          </p>
+        </div>
+    {% endif %}
+
+</body>

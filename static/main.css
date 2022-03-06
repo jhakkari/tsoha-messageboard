@@ -1,0 +1,81 @@
+body {
+    margin: auto;
+    max-width: 100em;
+}
+
+nav li {
+    display: inline-block;
+    padding: 0.5em;
+}
+
+.mainblock {
+    border-width: 2px;
+    border-radius: .5em;
+    border-style: solid;
+    border-color: rgb(208, 215, 222);
+    background-color: rgb(246, 248, 250);
+    margin-bottom: 1em;;
+    padding-left: 6px;
+}
+
+.secondaryblock {
+    border-width: 2px;
+    border-radius: .5em;
+    border-style: solid;
+    border-color: rgb(208, 215, 222);
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 1em;;
+    padding-left: 6px;
+}
+
+.loginheader {
+    text-align: center;
+}
+
+.loginregisterblock {
+    text-align: center;
+    border-width: 2px;
+    border-radius: .5em;
+    border-style: solid;
+    border-color: rgb(208, 215, 222);
+    background-color: rgb(246, 248, 250);
+    margin-bottom: 1em;;
+    padding-left: 6px;
+}
+
+.registerheader {
+    text-align: center;
+}
+
+.newthreadbutton {
+    float: right;
+}
+
+.nothreadsmessage {
+    text-align: center;
+}
+
+.modifyheader {
+    text-align: center;
+}
+
+.modifyblock {
+    text-align: center;
+    border-width: 2px;
+    border-radius: .5em;
+    border-style: solid;
+    border-color: rgb(208, 215, 222);
+    background-color: rgb(246, 248, 250);
+    margin-bottom: 1em;;
+    padding-left: 6px;
+}
+
+.newthreadblock {
+    border-width: 2px;
+    border-radius: .5em;
+    border-style: solid;
+    border-color: rgb(208, 215, 222);
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 1em;;
+    padding-left: 6px;
+}

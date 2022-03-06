@@ -1,36 +1,77 @@
-{% for topic in general_topics %}
-{{ topic.subject }} <br>
-<form action="/topics/delete" method="POST">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <input type="hidden" name="topic_id" value=" {{ topic.id }} ">
-    <input type="submit" value="Poista aihealue">
-</form>
-{% endfor %}
-</ul>
-<ul>
-{% for topic in hidden_topics %}
-{{ topic.subject }} <br>
-<form action="/topics/delete" method="POST">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <input type="hidden" name="topic_id" value=" {{ topic.id }} ">
-    <input type="submit" value="Poista aihealue">
-</form>
-{% endfor %}
+<!DOCTYPE html>
+<link rel="stylesheet" href="/static/main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-Luo uusi aihealue:
-<form action="/topics/new" method="POST">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <p> Alueen nimi:<br>
-        <input type="text" name="subject">
-    <p>
-        <label for="visibility">Näkyvyys käyttäjäryhmälle: </label>
-        <select name="visibility" id="visibility">
-            <option value="0">Peruskäyttäjä</option>
-            <option value="1">Ylläpitäjä</option>
-            <option value="2">Käyttäjäryhmä 1</option>
-            <option value="3">Käyttäjäryhmä 2</option>
-            <option value="4">Käyttäjäryhmä 3</option>
-        </select>
-    </p>
-    <input type="submit" value="Luo aihealue">
-</form>
+<body>
+  <nav>
+    <ul>
+      <li><a href="/">Aiheet</a></li>
+      <li><a href="/followed">Seuratut</a></li>
+      <li><a href="/admin">Hallitse</a></li>
+      <li><a href="/logout">Kirjaudu ulos</a></li>
+    </ul>
+  </nav>
+
+  <h2>Hallitse - pääkäyttäjän työkalut</h2>
+
+  <div class="mainblock">
+    <h3>Luo uusi aihealue</h3>
+    <form action="/topics/new" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <p>
+            Alueen nimi:
+        </p>
+            <input type="text" name="subject">
+        <p>
+            <label for="visibility">Näkyvyys käyttäjäryhmälle: </label>
+            <select name="visibility" id="visibility">
+                <option value="0">Peruskäyttäjä</option>
+                <option value="1">Ylläpitäjä</option>
+                <option value="2">Käyttäjäryhmä 1</option>
+                <option value="3">Käyttäjäryhmä 2</option>
+                <option value="4">Käyttäjäryhmä 3</option>
+            </select>
+        </p>
+        Käyttäjäryhmien aihealueisiin pääsevät vain ryhmien jäsenet. 
+        <p>
+            <input type="submit" value="Luo aihealue">
+        </p>
+    </form>
+  </div>
+
+  <p></p>
+  <h3>Poista yleisiä aihealueita</h3>
+  <h4>(Toiminto poistaa aihealueen sekä siihen liittyvät keskustelut viesteineen)</h4>
+  {% for topic in general_topics %}
+  <div class="mainblock">
+      <p>
+        {{ topic.subject }}
+      </p>
+    <form action="/topics/delete" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <input type="hidden" name="topic_id" value=" {{ topic.id }} ">
+        <p>
+            <input type="submit" value="Poista aihealue">
+        </p>
+    </form>
+  </div>
+  {% endfor %}
+
+  <p></p>
+  <h3>Poista piilotettuja aihealueita</h3>
+  <h4>(Toiminto poistaa aihealueen sekä siihen liittyvät keskustelut viesteineen)</h4>
+  {% for topic in hidden_topics %}
+  <div class="mainblock">
+      <p>
+        {{ topic.subject }}
+      </p>
+    <form action="/topics/delete" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <input type="hidden" name="topic_id" value=" {{ topic.id }} ">
+        <p>
+            <input type="submit" value="Poista aihealue">
+        </p>
+    </form>
+  </div>
+  {% endfor %}
+</body>

@@ -1,40 +1,83 @@
-{{ subject }}
-{{ content }}
-{{ username }}
-{{ created_at }}
+<!DOCTYPE html>
+<link rel="stylesheet" href="/static/main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% if session['user_id'] == user_id %}
-<form action="/thread/modify" method="POST">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <input type="hidden" name="thread_id" value="{{ thread_id }}">
-    <input type="submit" value="Muokkaa">
-</form>
-<form action="/thread/delete" method="POST">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <input type="hidden" name="thread_id" value="{{ thread_id }}">
-    <input type="hidden" name="topic_id" value="{{ topic_id }}">
-    <input type="submit" value="Poista">
-</form>
-{% endif %}
-<hr>
+<body>
+  <nav>
+    <ul>
+      <li><a href="/">Aiheet</a></li>
+      <li><a href="/followed">Seuratut</a></li>
+      <li><a href="/admin">Hallitse</a></li>
+      <li><a href="/logout">Kirjaudu ulos</a></li>
+    </ul>
+  </nav>
+  
+  <div class="mainblock">
+    <h3>{{ subject }}</h3>
+  
+    <p>
+        {{ content }}
+    </p>
+        
+    <p>
+        {{ username }} - {{ created_at.strftime("%d-%m-%Y klo. %H:%M") }}
+    </p>
+      
+    
+    {% if session['user_id'] == user_id %}
+    <p>
+    <div class="modifythreadbuttons">
+        <form action="/thread/modify" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+             <input type="hidden" name="thread_id" value="{{ thread_id }}">
+             <input type="submit" value="Muokkaa">
+          </form>
+          
+          <form action="/thread/delete" method="POST">
+              <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+              <input type="hidden" name="thread_id" value="{{ thread_id }}">
+              <input type="hidden" name="topic_id" value="{{ topic_id }}">
+              <input type="submit" value="Poista">
+          </form>
+      </div>
+    </p>
+    {% endif %}
+  </div>
 
-{% for message in reply_messages %}
-{{ message.content }} <br>
-{{ message.username }} - {{ message.created_at }} <br>
-<hr>
-{% if session['user_id'] == message[0] %}
-<form action="/messages/modify" method="POST">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <input type="hidden" name="message_id" value="{{ message[2] }}">
-    <input type="submit" value="Muokkaa">
-</form>
-{% endif %}
-{% endfor %}
+  {% for message in reply_messages %}
+  <div class="secondaryblock">
+      <p>
+        {{ message.content }}
+      </p>
+      <p>
+        {{ message.username }} - {{ message.created_at.strftime("%d-%m-%Y klo. %H:%M") }}
+      </p>
 
-Kirjoita uusi viesti: <br>
-<form action="/messages/new" method="POST">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <textarea name="message_content" rows="4" cols="50"></textarea>
-    <input type="hidden" name="thread_id" value="{{ thread_id }}">
-    <input type="submit" value="Lähetä">
-</form>
+      {% if session['user_id'] == message[0] %}
+      <p>
+      <div class="modifymessagebutton">
+        <form action="/messages/modify" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <input type="hidden" name="message_id" value="{{ message[2] }}">
+            <input type="submit" value="Muokkaa">
+        </form>
+      </div>
+      </p>
+      {% endif %}
+  </div>
+  {% endfor %}
+
+  <div class="secondaryblock">
+      <p>
+        Kirjoita uusi viesti:
+      </p>
+    <form action="/messages/new" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <textarea name="message_content" rows="4" cols="50"></textarea>
+        <input type="hidden" name="thread_id" value="{{ thread_id }}">
+        <input type="submit" value="Lähetä">
+        <p>
+    </form>
+  </div>
+
+</body>

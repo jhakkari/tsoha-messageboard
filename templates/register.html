@@ -1,18 +1,32 @@
-<form action="/register" method="post">
-    Tunnus: <input type="text" name="username">
-    <p>
-    Salasana: <input type="password" name="password1">
-    <p>
-    Vahvista salasana: <input type="password" name="password2">
-    <p>
-    <label for="user_group">Käyttäjäryhmä: </label>
-    <select name="user_group" id="user_group">
-        <option value="0">Peruskäyttäjä</option>
-        <option value="1">Ylläpitäjä</option>
-        <option value="2">Käyttäjäryhmä 1</option>
-        <option value="3">Käyttäjäryhmä 2</option>
-        <option value="4">Käyttäjäryhmä 3</option>
-    </select>
-    <p>
-    <input type="submit" value="Luo tunnus">
-    </form>
+<!DOCTYPE html>
+<link rel="stylesheet" href="/static/main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<body>
+    <div class="loginregisterblock">
+            <h1>Luo uusi käyttäjätunnus</h1>
+
+        <form action="/register" method="post">
+            Tunnus: <input type="text" name="username" required>
+            <p>
+            Salasana: <input type="password" name="password1" required>
+            <p>
+            Vahvista salasana: <input type="password" name="password2" required>
+            <p>
+            <label for="user_group">Käyttäjäryhmä: </label>
+            <select name="user_group" id="user_group" reguired>
+                <option value="0">Peruskäyttäjä</option>
+                <option value="1">Ylläpitäjä</option>
+                <option value="2">Käyttäjäryhmä 1</option>
+                <option value="3">Käyttäjäryhmä 2</option>
+                <option value="4">Käyttäjäryhmä 3</option>
+            </select>
+            <p>
+            Kukin käyttäjäryhmä näkee ryhmänsä sekä peruskäyttäjien toiminnan.
+            <p>
+            Ylläpitäjä näkee kaiken toiminnan.
+            <p>
+            <input type="submit" value="Luo tunnus">
+            </form>
+    </div>
+</body>

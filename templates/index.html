@@ -1,28 +1,68 @@
-{% if session.user_id %}
-<p>Olet kirjautunut sisään.</p>
-<a href="/logout">Kirjaudu ulos</a>
-<ul>
-{% for topic in general_topics %}
-{{ topic.subject }} <br>
-<a href="/threads/{{ topic.id }}">Siirry keskustelualueelle </a>
-<hr>
+<!DOCTYPE html>
+<link rel="stylesheet" href="/static/main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<body>
+  {% if session.user_id %}
+  <nav>
+    <ul>
+      <li><a href="/">Aiheet</a></li>
+      <li><a href="/ollowed">Seuratut</a></li>
+      <li><a href="/admin">Hallitse</a></li>
+      <li><a href="/logout">Kirjaudu ulos</a></li>
+    </ul>
+  </nav>
+
+  <div class="threads">
+      <h2>Aihealueet</h2>
+  </div>
+  
+  {% for topic in general_topics %}
+  <div class="mainblock">
+      <p>
+        <h3><a href="/threads/{{ topic.id }}">{{ topic.subject }}</a></h3>
+      </p>
+      <p>
+        Alueella {{ topic[2] }} viestiketjua
+      </p>
+  </div>
+      {% endfor %}
+      {% for topic in hidden_topics %}
+  <div class="mainblock">
+      <p>
+        <h3><a href="/threads/{{ topic.id }}">{{ topic.subject }} </a></h3>
+      </p>
+      <p>
+        Alueella {{ topic[2] }} viestiketjua
+      </p>
+  </div>
 {% endfor %}
+
 </ul>
-<ul>
-{% for topic in hidden_topics %}
-{{ topic.subject }} <br>
-<a href="/threads/{{ topic.id }}">Siirry piilotetulle keskustelualueelle </a>
-<hr>
-{% endfor %}
-</ul>
+
 {% else %}
-<form action="/login" method="POST">
-<p>Tunnus:<br>
-<input type="text" name="username"></p>
-<p>Salasana:<br>
-<input type="password" name="password"></p>
-<input type="submit" value="Kirjaudu">
-</form>
-<br>
-<a href="/register">Rekisteröidy</a>
+<div class="loginregisterblock">
+  <p>
+    <h1>Keskustelusovellus</h1>
+  </p>
+  Kirjaudu sisään ja aloita viestittely!
+  
+  <form action="/login" method="POST">
+    <p>
+      Tunnus:
+    </p>
+    <input type="text" name="username">
+    <p>
+      Salasana:
+    </p>
+    <input type="password" name="password">
+    <p>
+      <input type="submit" value="Kirjaudu">
+    </p>
+  </form>
+  <p>
+    <a href="/register">Rekisteröidy</a>
+  </p>
+</div>
 {% endif %}
+</body>

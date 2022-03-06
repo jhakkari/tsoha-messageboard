@@ -1,9 +1,31 @@
-Muokkaa ketjuasi:
+<!DOCTYPE html>
+<link rel="stylesheet" href="/static/main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<form action="/thread/modify/save" method="POST">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <input type="hidden" name="thread_id" value="{{ thread_id }}">
-    <textarea name="modified_subject" rows="1" cols="30">{{ subject }}</textarea>
-    <textarea name="modified_content" rows="10" cols="50">{{ content }}</textarea>
-    <input type="submit" value="Valmis">
-</form>
+<body>
+
+    <div class="modifyheader">
+        <p>
+        <h3>Muokkaa viestiketjuasi</h3>
+        </p>
+    </div>
+
+    <div class="modifyblock">
+        <form action="/thread/modify/save" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <input type="hidden" name="thread_id" value="{{ thread_id }}">
+            <p>
+            <h3>Otsikko:</h3>
+            <p>
+            <textarea name="modified_subject" rows="1" cols="30">{{ subject }}</textarea>
+            </p>
+            <h3>Aloitusviesti:</h3>
+            <p>
+            <textarea name="modified_content" rows="10" cols="50">{{ content }}</textarea>
+            </p>
+            <p>
+            <input type="submit" value="Valmis">
+            </p>
+        </form>
+    </div>
+</body>
