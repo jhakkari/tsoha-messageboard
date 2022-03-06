@@ -8,17 +8,17 @@ def new_topic(creator_id, subject, visibility):
     db.session.commit()
 
 def get_general_topics():
-    sql = "SELECT id, subject FROM topics WHERE visibility=0"
+    sql = "SELECT A.id, A.subject, (SELECT COUNT(T.*) FROM topics B LEFT JOIN threads T ON B.id=T.topic_id WHERE B.id=A.id) FROM topics A WHERE visibility=0;"
     results = db.session.execute(sql)
     return results
 
 def get_hidden_topics(visibility):
     if visibility == 1:
-        sql = ("SELECT id, subject FROM topics WHERE visibility BETWEEN 1 AND 4")
+        sql = ("SELECT C.id, C.subject, (SELECT COUNT(A.*) FROM topics B LEFT JOIN threads A ON B.id=A.topic_id WHERE B.id=1)  FROM topics C WHERE visibility BETWEEN 1 AND 4")
         results = db.session.execute(sql).fetchall()
         return results
     else:
-        sql = ("SELECT id, subject FROM topics WHERE visibility=:visibility")
+        sql = ("SELECT C.id, C.subject, (SELECT COUNT(A.*) FROM topics B LEFT JOIN threads A ON B.id=A.topic_id WHERE B.id=1)  FROM topics C WHERE visibility=:visibility")
         results = db.session.execute(sql, {"visibility":visibility}).fetchall()
         return results
 
