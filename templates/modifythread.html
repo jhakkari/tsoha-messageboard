@@ -17,11 +17,11 @@
             <p>
             <h3>Otsikko:</h3>
             <p>
-            <textarea name="modified_subject" rows="1" cols="30">{{ subject }}</textarea>
+            <textarea name="modified_subject" rows="1" cols="30" required minlength="1" maxlength="150">{{ subject }}</textarea>
             </p>
             <h3>Aloitusviesti:</h3>
             <p>
-            <textarea name="modified_content" rows="10" cols="50">{{ content }}</textarea>
+            <textarea name="modified_content" rows="10" cols="50" maxlength="1500">{{ content }}</textarea>
             </p>
             <p>
             <input type="submit" value="Valmis">

@@ -15,7 +15,7 @@
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             <input type="hidden" name="message_id" value="{{ message_id }}">
             <p>
-            <textarea name="modified_content" rows="10" cols="50">{{ content }}</textarea>
+            <textarea name="modified_content" rows="10" cols="50" maxlength="600">{{ content }}</textarea>
             </p>
             <p>
             <input type="submit" value="Valmis">

@@ -16,6 +16,8 @@ nav li {
     background-color: rgb(246, 248, 250);
     margin-bottom: 1em;;
     padding-left: 6px;
+    padding-right: 6px;
+    overflow-wrap: break-word;
 }
 
 .secondaryblock {
@@ -26,6 +28,8 @@ nav li {
     background-color: rgb(255, 255, 255);
     margin-bottom: 1em;;
     padding-left: 6px;
+    padding-right: 6px;
+    overflow-wrap: break-word;
 }
 
 .loginheader {
@@ -68,6 +72,8 @@ nav li {
     background-color: rgb(246, 248, 250);
     margin-bottom: 1em;;
     padding-left: 6px;
+    padding-right: 6px;
+    overflow-wrap: break-word;
 }
 
 .newthreadblock {
@@ -78,6 +84,8 @@ nav li {
     background-color: rgb(255, 255, 255);
     margin-bottom: 1em;;
     padding-left: 6px;
+    padding-right: 6px;
+    overflow-wrap: break-word;
 }
 
 .warningmessage {

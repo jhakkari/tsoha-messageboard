@@ -73,7 +73,7 @@
       </p>
     <form action="/messages/new" method="POST">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-        <textarea name="message_content" rows="4" cols="50"></textarea>
+        <textarea name="message_content" rows="4" cols="50" maxlength="600"></textarea>
         <input type="hidden" name="thread_id" value="{{ thread_id }}">
         <input type="submit" value="Lähetä">
         <p>
