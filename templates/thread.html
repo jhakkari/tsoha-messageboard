@@ -11,6 +11,14 @@
       <li><a href="/logout">Kirjaudu ulos</a></li>
     </ul>
   </nav>
+
+  <div class="followbutton">
+      <form action="/followed/add" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <input type="hidden" name="thread_id" value="{{ thread_id }}">
+        <input type="submit" value="Seuraa ketjua">
+      </form>
+  </div>
   
   <div class="mainblock">
     <h3>{{ subject }}</h3>
@@ -30,6 +38,7 @@
         <form action="/thread/modify" method="POST">
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
              <input type="hidden" name="thread_id" value="{{ thread_id }}">
+             print({{ thread_id }})
              <input type="submit" value="Muokkaa">
           </form>
           

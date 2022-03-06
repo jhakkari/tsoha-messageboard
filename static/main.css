@@ -91,3 +91,8 @@ nav li {
 .warningmessage {
     color: red;
 }
+
+.followbutton {
+    float: right;
+    padding: .5em;
+}

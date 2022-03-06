@@ -2,7 +2,7 @@ from db import db
 from flask import session
 
 def add_followed_threads(user_id, thread_id):
-    sql = ("INSERT INTO followed (user_id, thread_id, added_at) VALUES (:user_id, :thread_id, NOW()))")
+    sql = ("INSERT INTO followed (user_id, thread_id, added_at) VALUES (:user_id, :thread_id, NOW())")
     db.session.execute(sql, {"user_id":user_id, "thread_id":thread_id})
     db.session.commit()
 

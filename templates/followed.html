@@ -20,7 +20,7 @@
           <h3><a href="/thread/{{ thread.id }}">{{ thread.subject }} </a></h3>
         </p>
         <p>
-            Seurattu {{ thread.added_atstrftime("%d-%m-%Y klo. %H:%M") }} alkaen
+            Seurattu {{ thread.added_at.strftime("%d-%m-%Y klo. %H:%M") }} alkaen
         </p>
     <form action="/followed/delete" method="POST">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">

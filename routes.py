@@ -227,9 +227,18 @@ def add_followed():
         return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
-    thread_id = request.form["thread_id"]
+    thread_id = int(request.form["thread_id"])
     followed.add_followed_threads(users.user_id(), thread_id)
     return redirect("/thread/" + str(thread_id))
+
+@app.route("/followed/delete", methods=["POST"])
+def delete_followed():
+    if users.user_id() == 0:
+        return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    followed.remove_followed_thread(session["user_id"], request.form["thread_id"])
+    return redirect("/followed")
 
 @app.route("/admin")
 def admin():
