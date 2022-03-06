@@ -171,11 +171,12 @@ def new_message():
 def modify_message():
     if users.user_id() == 0:
         return render_template("error.html", message="Kirjaudu sisään jatkaaksesi.")
-    message = messages.get_message(request.form["message_id"])
+    message_id = request.form["message_id"]
+    message = messages.get_message(message_id)
     if message[0] == session["user_id"]:
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
-        return render_template("modifymessage.html", message_id=message[0], content=message[1])
+        return render_template("modifymessage.html", message_id=message_id, content=message[1])
     else:
         return render_template("error.html", message="Ei vaadittavia oikeuksia.")
 
