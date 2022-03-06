@@ -18,13 +18,20 @@ Sovelluksen ominaisuuksia:
 
 ## Sovelluksen tila
 
-Keskustelualueet näkyvät sovelluksen etusivulla. Perusominaisuudet toimivat, ulkoasu on täysin keskeneräinen.
+Keskustelualueet näkyvät sovelluksen etusivulla. Viestiketjuihin 
 
 
 ## Toimivat ominaisuudet
 
 - Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
+- Käyttäjä voi valita itselleen käyttäjäryhmän. Eri ryhmillä on omia piilotettuja keskustelualueita.
 - Sovelluksen etusivulla näkyy lista olemassa olevista keskustelualueista.
 - Keskustelualueilla näkyy lista olemassa olevista ketjuista.
+- Ylläpitäjä voi luoda uusia keskustelualueita.
+- Ylläpitäjä voi poistaa keskustelualueita. Poisto vaikuttaa myös sen sisältämiin viestiketjuihin ja niiden viesteihin.
+- Käyttäjä voi luoda uusia viestiketjuja ja vastata niihin.
+- Kommentteja ja viestiketjuja voi muuttaa/poistaa.
+- Viestiketjuja voi tallentaa seurattuihin ketjuihin.
+
 
 Sovellus on testattavissa [Herokussa.](https://tsohak-messageboard.herokuapp.com/)
