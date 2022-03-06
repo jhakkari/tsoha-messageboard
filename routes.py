@@ -81,10 +81,10 @@ def theads(id):
     elif session["user_group"] != 0:
         general_threads = threads.get_general_threads(id)
         hidden_threads = threads.get_hidden_threads(id, session["user_group"])
-        return render_template("threads.html", general_threads=general_threads, hidden_threads=hidden_threads)
+        return render_template("threads.html", general_threads=general_threads, hidden_threads=hidden_threads, topic_id=id)
     else:
         general_threads = threads.get_general_threads(id)
-        return render_template("threads.html", general_threads=general_threads)
+        return render_template("threads.html", general_threads=general_threads, topic_id=id)
 
 @app.route("/threads/new", methods=["POST"])
 def new_thread():
@@ -97,8 +97,8 @@ def new_thread():
         creator_id = users.user_id()
         subject = request.form["subject"]
         content= request.form["content"]
-        visibility = request.form["visibility"]
-        threads.new_thread(topic_id, creator_id, subject, content, visibility)
+        visibility = topics.get_topic_visibility(topic_id)
+        threads.new_thread(topic_id, creator_id, subject, content, visibility[0])
         return redirect("/threads/" + str(topic_id))
     return render_template("error.html", message="Ei vaadittavia oikeuksia.")
 

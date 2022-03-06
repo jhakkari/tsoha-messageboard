@@ -3,9 +3,9 @@ from flask import session
 import messages, followed
 
 def new_thread(topic_id, creator_id, subject, content, visibility):
-    sql = ("INSERT INTO topics (topic_id, creator_id, created_at, subject, content, visibility, modified) VALUES (:topic_id, :creator_id, NOW(), :subject, :content, :visibility, NOW())")
+    sql = ("INSERT INTO threads (topic_id, creator_id, created_at, subject, content, visibility, modified) VALUES (:topic_id, :creator_id, NOW(), :subject, :content, :visibility, NOW())")
     db.session.execute(sql, {"topic_id":topic_id, "creator_id":creator_id, "subject":subject, "content":content, "visibility":visibility})
-    db.session.commit
+    db.session.commit()
 
 def get_thread(id):
     sql = ("SELECT T.subject, T.content, T.created_at, T.modified, U.username, U.role, U.id, T.id, T.topic_id FROM threads T, users U WHERE T.creator_id=U.id AND T.id=:id")

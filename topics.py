@@ -22,6 +22,11 @@ def get_hidden_topics(visibility):
         results = db.session.execute(sql, {"visibility":visibility}).fetchall()
         return results
 
+def get_topic_visibility(topic_id):
+    sql = ("SELECT visibility FROM topics WHERE id=:topic_id")
+    result = db.session.execute(sql, {"topic_id":topic_id}).fetchone()
+    return result
+
 def check_access(topic_id, user_group):
     sql = ("SELECT visibility FROM topics WHERE id=:topic_id")
     results = db.session.execute(sql, {"topic_id":topic_id}).fetchone()
